@@ -157,27 +157,91 @@ function HeroMockup() {
   }));
   return (
     <View style={s.mockupOuter}>
+      {/* Browser chrome */}
       <View style={s.browserBar}>
         <View style={[s.browserDot, { backgroundColor: '#FF5F57' }]} />
         <View style={[s.browserDot, { backgroundColor: '#FFBD2E' }]} />
         <View style={[s.browserDot, { backgroundColor: '#28C840' }]} />
         <View style={s.browserUrl}>
-          <Text style={s.browserUrlText}>https://yourclient.com</Text>
+          <Text style={s.browserUrlText}>https://urbannest.com</Text>
         </View>
       </View>
+
       <View style={s.mockPage}>
-        <View style={s.mockNav} />
-        <View style={s.mockHero}>
-          <View style={s.mockHeroText1} />
-          <View style={s.mockHeroText2} />
-          <View style={s.mockHeroBtn} />
+        {/* Navbar */}
+        <View style={s.mkNav}>
+          <View style={s.mkNavLogo}>
+            <View style={[s.mkNavDot, { backgroundColor: C.accent }]} />
+            <Text style={s.mkNavLogoText}>UrbanNest</Text>
+          </View>
+          <View style={s.mkNavLinks}>
+            {['Listings', 'Agents', 'Blog'].map((lnk) => (
+              <Text key={lnk} style={s.mkNavLinkText}>{lnk}</Text>
+            ))}
+            <View style={s.mkNavCta}>
+              <Text style={s.mkNavCtaText}>Get Started</Text>
+            </View>
+          </View>
         </View>
-        <View style={s.mockCards}>
-          {[C.accent, C.purple, C.green].map((col, i) => (
-            <View key={i} style={[s.mockCard, { borderTopColor: col }]} />
+
+        {/* Hero band */}
+        <View style={s.mkHeroBand}>
+          <View style={s.mkHeroLeft}>
+            <View style={s.mkTag}>
+              <Text style={s.mkTagText}>#1 Realty in the City</Text>
+            </View>
+            <Text style={s.mkHeadline}>{'Find Your\nDream Home.'}</Text>
+            <Text style={s.mkSub}>500+ premium listings across downtown, suburbs & waterfront.</Text>
+            <View style={s.mkBtns}>
+              <View style={s.mkBtnPrimary}><Text style={s.mkBtnPrimaryText}>View Listings</Text></View>
+              <View style={s.mkBtnSecondary}><Text style={s.mkBtnSecondaryText}>Contact Agent</Text></View>
+            </View>
+          </View>
+          <View style={s.mkHeroImg}>
+            <View style={s.mkImgBg} />
+            <View style={s.mkImgOverlay} />
+            <View style={s.mkImgTag}>
+              <Text style={s.mkImgTagText}>📍 Downtown</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Stats row */}
+        <View style={s.mkStats}>
+          {[
+            { val: '500+', lbl: 'Listings' },
+            { val: '98%',  lbl: 'Satisfaction' },
+            { val: '12yr', lbl: 'Experience' },
+          ].map((st, i) => (
+            <View key={i} style={[s.mkStat, i > 0 && { borderLeftWidth: 1, borderLeftColor: C.border }]}>
+              <Text style={s.mkStatVal}>{st.val}</Text>
+              <Text style={s.mkStatLbl}>{st.lbl}</Text>
+            </View>
+          ))}
+        </View>
+
+        {/* Property cards */}
+        <View style={s.mkCards}>
+          {[
+            { price: '$485K', name: 'Maple Ridge Villa', beds: '4 bd · 3 ba', col: C.accent },
+            { price: '$320K', name: 'Sunset Condo #12',  beds: '2 bd · 2 ba', col: C.purple },
+            { price: '$750K', name: 'Lakefront Estate',  beds: '5 bd · 4 ba', col: C.green },
+          ].map((p, i) => (
+            <View key={i} style={s.mkCard}>
+              <View style={[s.mkCardImg, { backgroundColor: p.col + '22', borderBottomColor: p.col + '55' }]}>
+                <Text style={[s.mkCardImgIcon, { color: p.col }]}>🏠</Text>
+              </View>
+              <View style={s.mkCardBody}>
+                <Text style={s.mkCardPrice}>{p.price}</Text>
+                <Text style={s.mkCardName}>{p.name}</Text>
+                <Text style={s.mkCardBeds}>{p.beds}</Text>
+              </View>
+            </View>
           ))}
         </View>
       </View>
+
+      {/* Floating badge */}
       <Animated.View style={[s.mockBadge, bobStyle]}>
         <Text style={s.mockBadgeIcon}>✓</Text>
         <View>
@@ -617,6 +681,44 @@ const s = StyleSheet.create({
   mockBadgeIcon: { fontSize: 18, color: C.green },
   mockBadgeTitle: { color: C.text, fontSize: 13, fontWeight: '700' },
   mockBadgeSub: { color: C.textSub, fontSize: 11 },
+
+  // Mockup — realistic client site
+  mkNav: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
+  mkNavLogo: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  mkNavDot: { width: 8, height: 8, borderRadius: 4 },
+  mkNavLogoText: { color: C.text, fontSize: 9, fontWeight: '800' },
+  mkNavLinks: { flexDirection: 'row', alignItems: 'center', gap: 8 },
+  mkNavLinkText: { color: C.textSub, fontSize: 7 },
+  mkNavCta: { backgroundColor: C.accent, paddingHorizontal: 8, paddingVertical: 3, borderRadius: 4 },
+  mkNavCtaText: { color: '#fff', fontSize: 7, fontWeight: '700' },
+  mkHeroBand: { flexDirection: 'row', gap: 10, marginBottom: 10, alignItems: 'center' },
+  mkHeroLeft: { flex: 1, gap: 5 },
+  mkTag: { backgroundColor: C.accent + '22', borderRadius: 10, paddingHorizontal: 7, paddingVertical: 2, alignSelf: 'flex-start' },
+  mkTagText: { color: C.accent, fontSize: 6, fontWeight: '700' },
+  mkHeadline: { color: C.text, fontSize: isWeb ? 14 : 11, fontWeight: '800', lineHeight: isWeb ? 18 : 14 },
+  mkSub: { color: C.textSub, fontSize: 7, lineHeight: 10 },
+  mkBtns: { flexDirection: 'row', gap: 5, marginTop: 2 },
+  mkBtnPrimary: { backgroundColor: C.accent, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4 },
+  mkBtnPrimaryText: { color: '#fff', fontSize: 7, fontWeight: '700' },
+  mkBtnSecondary: { borderWidth: 1, borderColor: C.border, paddingHorizontal: 8, paddingVertical: 4, borderRadius: 4 },
+  mkBtnSecondaryText: { color: C.textSub, fontSize: 7 },
+  mkHeroImg: { width: isWeb ? 150 : 100, borderRadius: 10, overflow: 'hidden' },
+  mkImgBg: { width: '100%', height: isWeb ? 110 : 88, backgroundColor: '#1A2A46', borderRadius: 10 },
+  mkImgOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: C.accent + '18', borderRadius: 10 },
+  mkImgTag: { position: 'absolute', bottom: 6, left: 6, backgroundColor: 'rgba(6,13,31,0.80)', borderRadius: 5, paddingHorizontal: 5, paddingVertical: 2 },
+  mkImgTagText: { color: C.text, fontSize: 7, fontWeight: '600' },
+  mkStats: { flexDirection: 'row', backgroundColor: '#13203C', borderRadius: 8, marginBottom: 10, overflow: 'hidden' },
+  mkStat: { flex: 1, alignItems: 'center', paddingVertical: 7 },
+  mkStatVal: { color: C.text, fontSize: 11, fontWeight: '800' },
+  mkStatLbl: { color: C.textSub, fontSize: 6 },
+  mkCards: { flexDirection: 'row', gap: 6 },
+  mkCard: { flex: 1, backgroundColor: '#13203C', borderRadius: 8, overflow: 'hidden' },
+  mkCardImg: { height: 36, alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1 },
+  mkCardImgIcon: { fontSize: 14 },
+  mkCardBody: { padding: 6, gap: 2 },
+  mkCardPrice: { color: C.accent, fontSize: 9, fontWeight: '800' },
+  mkCardName: { color: C.text, fontSize: 7, fontWeight: '600' },
+  mkCardBeds: { color: C.textSub, fontSize: 6 },
 
   // Services
   servicesGrid: { flexDirection: isWeb ? 'row' : 'column', gap: 24, alignItems: 'stretch' },
