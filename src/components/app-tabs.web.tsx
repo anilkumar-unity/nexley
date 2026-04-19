@@ -1,18 +1,18 @@
 import { useRouter } from 'expo-router';
 import {
-  TabList,
-  TabListProps,
-  Tabs,
-  TabSlot,
-  TabTrigger,
-  TabTriggerSlotProps,
+    TabList,
+    TabListProps,
+    Tabs,
+    TabSlot,
+    TabTrigger,
+    TabTriggerSlotProps,
 } from 'expo-router/ui';
 import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
-import { MaxContentWidth, Spacing } from '@/constants/theme';
 import { contactRef } from '@/app/index';
+import { MaxContentWidth, Spacing } from '@/constants/theme';
 
 // ── Brand colors (fixed dark, no theme switching for the marketing navbar)
 const NAV_BG      = '#0C1628';
