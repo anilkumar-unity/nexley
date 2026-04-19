@@ -47,7 +47,7 @@ const MAX_W  = 1180;
 // Ref used by the "View Our Work" button to scroll to the portfolio section
 const projectsRef = React.createRef<View>();
 // Ref used by the "Chat on WhatsApp" hero button to scroll to the contact section
-const contactRef = React.createRef<View>();
+export const contactRef = React.createRef<View>();
 
 // ─── Shared ───────────────────────────────────────────────────────────────────
 function Eyebrow({ text }: { text: string }) {

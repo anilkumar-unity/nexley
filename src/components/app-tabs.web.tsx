@@ -12,6 +12,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import { MaxContentWidth, Spacing } from '@/constants/theme';
+import { contactRef } from '@/app/index';
 
 // ── Brand colors (fixed dark, no theme switching for the marketing navbar)
 const NAV_BG      = '#0C1628';
@@ -30,7 +31,13 @@ export default function AppTabs() {
           contactSlot={
             <Pressable
               style={({ pressed }) => pressed && styles.pressed}
-              onPress={() => router.push('/#contact' as any)}
+              onPress={() => {
+                if (contactRef.current) {
+                  (contactRef.current as any).scrollIntoView({ behavior: 'smooth' });
+                } else {
+                  router.push('/' as any);
+                }
+              }}
             >
               <Text style={styles.navLink}>Contact</Text>
             </Pressable>
