@@ -46,6 +46,8 @@ const MAX_W  = 1180;
 
 // Ref used by the "View Our Work" button to scroll to the portfolio section
 const projectsRef = React.createRef<View>();
+// Ref used by the "Chat on WhatsApp" hero button to scroll to the contact section
+const contactRef = React.createRef<View>();
 
 // ─── Shared ───────────────────────────────────────────────────────────────────
 function Eyebrow({ text }: { text: string }) {
@@ -113,7 +115,7 @@ function HeroSection() {
           <FadeIn delay={360} from="down" style={s.heroCtas}>
             <Pressable
               style={({ pressed }) => [s.ctaPrimary, pressed && { opacity: 0.85 }]}
-              onPress={() => Linking.openURL('https://wa.me/+1234567890?text=Hi%2C+I+want+to+discuss+a+project')}
+              onPress={() => (contactRef.current as any)?.scrollIntoView?.({ behavior: 'smooth' })}
             >
               <Text style={s.ctaPrimaryText}>💬  Chat on WhatsApp</Text>
             </Pressable>
@@ -233,7 +235,7 @@ function ServicesSection() {
               style={({ pressed }) => [s.serviceBtn, { borderColor: svc.color + '55' }, pressed && { opacity: 0.8 }]}
               onPress={() =>
                 Linking.openURL(
-                  'https://wa.me/+1234567890?text=Hi%2C+I+want+to+know+more+about+' +
+                  'https://wa.me/+17802580666?text=Hi%2C+I+want+to+know+more+about+' +
                     encodeURIComponent(svc.title),
                 )
               }
@@ -351,12 +353,12 @@ function ContactSection() {
     if (!name.trim() || !email.trim() || !message.trim()) return;
     const text =
       `Hi, I'm ${name} (${email}).\n\nService: ${service || 'Not specified'}\n\n${message}`;
-    Linking.openURL('https://wa.me/+1234567890?text=' + encodeURIComponent(text));
+    Linking.openURL('https://wa.me/+17802580666?text=' + encodeURIComponent(text));
     setSent(true);
   }
 
   return (
-    <View style={s.section}>
+    <View ref={contactRef} style={s.section}>
       <View style={s.contactGrid}>
         {/* Left info panel */}
         <AnimateOnScroll from="left" delay={100} style={s.contactLeft}>
@@ -368,14 +370,14 @@ function ContactSection() {
           <Pressable
             style={({ pressed }) => [s.waBtn, pressed && { opacity: 0.88 }]}
             onPress={() =>
-              Linking.openURL('https://wa.me/+1234567890?text=Hi%2C+I+want+to+discuss+a+project')
+              Linking.openURL('https://wa.me/+17802580666?text=Hi%2C+I+want+to+discuss+a+project')
             }
           >
             <Text style={s.waBtnText}>💬  Message us on WhatsApp</Text>
           </Pressable>
           <View style={s.contactInfoRows}>
             {[
-              { icon: '📧', label: 'Email',    val: 'hello@nexley.dev' },
+              { icon: '📧', label: 'Email',    val: 'nexlydigitalsolution@gmail.com' },
               { icon: '📍', label: 'Location', val: 'Remote · Worldwide' },
               { icon: '⏰', label: 'Response', val: 'Within 24 hours' },
             ].map((row, i) => (
@@ -488,7 +490,7 @@ function Footer() {
         <Text style={s.footerCopy}>© 2025 Nexley Digital. All rights reserved.</Text>
         <Pressable
           style={({ pressed }) => [s.footerWa, pressed && { opacity: 0.8 }]}
-          onPress={() => Linking.openURL('https://wa.me/+1234567890')}
+          onPress={() => Linking.openURL('https://wa.me/+17802580666')}
         >
           <Text style={s.footerWaText}>💬  WhatsApp Us</Text>
         </Pressable>
