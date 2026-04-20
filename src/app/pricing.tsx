@@ -1,6 +1,6 @@
 import { AnimateOnScroll } from '@/components/animate-on-scroll';
 import React, { useState } from 'react';
-import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const C = {
@@ -22,6 +22,11 @@ const C = {
 const isWeb = Platform.OS === 'web';
 const GUTTER = isWeb ? 80 : 24;
 const MAX_W  = 1100;
+
+function useIsMobile() {
+  const { width } = useWindowDimensions();
+  return width < 768;
+}
 
 // ─── Data ──────────────────────────────────────────────────────────────────────
 
@@ -238,12 +243,13 @@ function PricingCard({
 
 export default function PricingScreen() {
   const [cycle, setCycle] = useState<BillingCycle>('monthly');
+  const isMobile = useIsMobile();
   const insets = useSafeAreaInsets();
 
   return (
     <ScrollView style={s.root} contentContainerStyle={[s.root2, !isWeb && { paddingTop: insets.top }]}>
       {/* Header */}
-      <View style={s.hero}>
+      <View style={[s.hero, isMobile && { paddingHorizontal: 20 }]}>
         <View style={[s.blob, { left: -100, top: -60, backgroundColor: 'rgba(74,124,252,0.09)' }]} />
         <View style={[s.blob, { right: -80, bottom: -40, backgroundColor: 'rgba(139,92,246,0.07)' }]} />
         <AnimateOnScroll from="down" delay={0} style={{ alignItems: 'center', gap: 16 }}>
@@ -278,9 +284,9 @@ export default function PricingScreen() {
       </View>
 
       {/* Website / Subscription plans */}
-      <View style={s.section}>
+      <View style={[s.section, isMobile && { paddingHorizontal: 20 }]}>
         <Text style={s.sectionLabel}>🌐  Website Plans · Subscription</Text>
-        <View style={s.grid}>
+        <View style={[s.grid, isMobile && { flexDirection: 'column' }]}>
           {WEBSITE_PLANS.map((plan, i) => (
             <PricingCard key={i} plan={plan} cycle={cycle} highlight={plan.badge === 'Most Popular'} delay={i * 150} />
           ))}
@@ -288,9 +294,9 @@ export default function PricingScreen() {
       </View>
 
       {/* App / One-time plans */}
-      <View style={[s.section, s.sectionAlt]}>
+      <View style={[s.section, s.sectionAlt, isMobile && { paddingHorizontal: 20 }]}>
         <Text style={s.sectionLabel}>📱  App Development · One-Time</Text>
-        <View style={s.grid}>
+        <View style={[s.grid, isMobile && { flexDirection: 'column' }]}>
           {APP_PLANS.map((plan, i) => (
             <PricingCard key={i} plan={plan} cycle="once" highlight={plan.badge === 'Best Value'} delay={i * 150} />
           ))}

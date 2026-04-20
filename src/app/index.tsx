@@ -9,6 +9,7 @@ import {
     StyleSheet,
     Text,
     TextInput,
+    useWindowDimensions,
     View,
 } from 'react-native';
 import Animated, {
@@ -50,6 +51,12 @@ const projectsRef = React.createRef<View>();
 // Ref used by the "Chat on WhatsApp" hero button to scroll to the contact section
 export const contactRef = React.createRef<View>();
 
+// ─── Responsive hook ─────────────────────────────────────────────────────────
+function useIsMobile() {
+  const { width } = useWindowDimensions();
+  return width < 768;
+}
+
 // ─── Shared ───────────────────────────────────────────────────────────────────
 function Eyebrow({ text }: { text: string }) {
   return <Text style={s.eyebrow}>{text}</Text>;
@@ -83,6 +90,7 @@ function FadeIn({
 
 // ─── HERO ─────────────────────────────────────────────────────────────────────
 function HeroSection() {
+  const isMobile = useIsMobile();
   const pulse = useSharedValue(1);
   useEffect(() => {
     pulse.value = withRepeat(withTiming(1.6, { duration: 1400 }), -1, true);
@@ -92,17 +100,17 @@ function HeroSection() {
     opacity: 2 - pulse.value,
   }));
   return (
-    <View style={s.heroWrap}>
+    <View style={[s.heroWrap, isMobile && { paddingHorizontal: 20 }]}>
       <View style={[s.blob, { left: -120, top: -80,   backgroundColor: 'rgba(74,124,252,0.10)' }]} />
       <View style={[s.blob, { right: -80, bottom: -60, backgroundColor: 'rgba(139,92,246,0.08)' }]} />
-      <View style={s.heroInner}>
+      <View style={[s.heroInner, isMobile && { flexDirection: 'column', gap: 32 }]}>
         <View style={s.heroLeft}>
           <FadeIn delay={0} from="down" style={s.heroBadge}>
             <Animated.View style={[s.heroBadgeDot, pulseStyle]} />
             <Text style={s.heroBadgeText}>Digital Agency · Est. 2024</Text>
           </FadeIn>
           <FadeIn delay={120} from="down">
-            <Text style={s.heroHeadline}>
+            <Text style={[s.heroHeadline, isMobile && { fontSize: 38, lineHeight: 48 }]}>
               {'We Build\nDigital Products\nThat '}
               <Text style={{ color: C.accent }}>Convert.</Text>
             </Text>
@@ -113,15 +121,15 @@ function HeroSection() {
               experiences that grow your business.
             </Text>
           </FadeIn>
-          <FadeIn delay={360} from="down" style={s.heroCtas}>
+          <FadeIn delay={360} from="down" style={[s.heroCtas, isMobile && { flexDirection: 'column' }]}>
             <Pressable
-              style={({ pressed }) => [s.ctaPrimary, pressed && { opacity: 0.85 }]}
+              style={({ pressed }) => [s.ctaPrimary, isMobile && { alignSelf: 'stretch' }, pressed && { opacity: 0.85 }]}
               onPress={() => (contactRef.current as any)?.scrollIntoView?.({ behavior: 'smooth' })}
             >
               <Text style={s.ctaPrimaryText}>💬  Chat on WhatsApp</Text>
             </Pressable>
             <Pressable
-              style={({ pressed }) => [s.ctaSecondary, pressed && { opacity: 0.85 }]}
+              style={({ pressed }) => [s.ctaSecondary, isMobile && { alignSelf: 'stretch' }, pressed && { opacity: 0.85 }]}
               onPress={() => (projectsRef.current as any)?.scrollIntoView?.({ behavior: 'smooth' })}
             >
               <Text style={s.ctaSecondaryText}>View Our Work  →</Text>
@@ -140,7 +148,7 @@ function HeroSection() {
             ))}
           </FadeIn>
         </View>
-        {isWeb && (
+        {!isMobile && (
           <FadeIn delay={300} from="right" style={s.heroRight}>
             <HeroMockup />
           </FadeIn>
@@ -276,14 +284,15 @@ const SERVICES = [
 ];
 
 function ServicesSection() {
+  const isMobile = useIsMobile();
   return (
-    <View style={s.section}>
+    <View style={[s.section, isMobile && { paddingHorizontal: 20 }]}>
       <AnimateOnScroll from="up" style={s.sectionHeader}>
         <Eyebrow text="WHAT WE BUILD" />
         <SectionHead text="Our Services" />
         <SectionSub text="Everything you need to establish and grow your digital presence — under one roof." />
       </AnimateOnScroll>
-      <View style={s.servicesGrid}>
+      <View style={[s.servicesGrid, isMobile && { flexDirection: 'column' }]}>
         {SERVICES.map((svc, i) => (
           <AnimateOnScroll key={i} delay={i * 150} from="up" style={[s.serviceCard, { borderTopColor: svc.color }]}>
             <View style={[s.serviceIconBox, { backgroundColor: svc.color + '18' }]}>
@@ -345,16 +354,17 @@ const PROJECTS = [
 ];
 
 function ProjectsSection() {
+  const isMobile = useIsMobile();
   return (
-    <View ref={projectsRef} style={s.projectsBg}>
+    <View ref={projectsRef} style={[s.projectsBg, isMobile && { paddingHorizontal: 20 }]}>
       <AnimateOnScroll from="up" style={s.sectionHeader}>
         <Eyebrow text="PORTFOLIO" />
         <SectionHead text="Our Work" />
         <SectionSub text="A look at the kind of work we deliver. Every project is custom-built to the client's goals." />
       </AnimateOnScroll>
-      <View style={s.projectsGrid}>
+      <View style={[s.projectsGrid, isMobile && { flexDirection: 'column' }]}>
         {PROJECTS.map((p, i) => (
-          <AnimateOnScroll key={i} delay={i * 200} from="up" style={s.projectCard}>
+          <AnimateOnScroll key={i} delay={i * 200} from="up" style={[s.projectCard, isMobile && { width: '100%' }]}>
             <View style={s.projectScreen}>
               <Image source={{ uri: p.imageUrl }} style={s.projectImage} resizeMode="cover" />
               <View style={[s.projectImageOverlay, { borderBottomColor: p.color }]} />
@@ -389,15 +399,16 @@ const WHY = [
 ];
 
 function WhyUsSection() {
+  const isMobile = useIsMobile();
   return (
-    <View style={s.section}>
+    <View style={[s.section, isMobile && { paddingHorizontal: 20 }]}>
       <AnimateOnScroll from="up" style={s.sectionHeader}>
         <Eyebrow text="WHY CHOOSE US" />
         <SectionHead text="The Nexley Advantage" />
       </AnimateOnScroll>
-      <View style={s.whyGrid}>
+      <View style={[s.whyGrid, isMobile && { flexDirection: 'column' }]}>
         {WHY.map((w, i) => (
-          <AnimateOnScroll key={i} delay={i * 120} from="up" style={s.whyCard}>
+          <AnimateOnScroll key={i} delay={i * 120} from="up" style={[s.whyCard, isMobile && { width: '100%' }]}>
             <Text style={s.whyIcon}>{w.icon}</Text>
             <Text style={s.whyTitle}>{w.title}</Text>
             <Text style={s.whyDesc}>{w.desc}</Text>
@@ -410,6 +421,7 @@ function WhyUsSection() {
 
 // ─── CONTACT ─────────────────────────────────────────────────────────────────
 function ContactSection() {
+  const isMobile = useIsMobile();
   const [name,    setName]    = useState('');
   const [email,   setEmail]   = useState('');
   const [service, setService] = useState('');
@@ -425,8 +437,8 @@ function ContactSection() {
   }
 
   return (
-    <View ref={contactRef} style={s.section}>
-      <View style={s.contactGrid}>
+    <View ref={contactRef} style={[s.section, isMobile && { paddingHorizontal: 20 }]}>
+      <View style={[s.contactGrid, isMobile && { flexDirection: 'column', gap: 32 }]}>
         {/* Left info panel */}
         <AnimateOnScroll from="left" delay={100} style={s.contactLeft}>
           <Eyebrow text="GET IN TOUCH" />
@@ -470,9 +482,9 @@ function ContactSection() {
               </Text>
             </View>
           ) : (
-            <View style={s.formCard}>
+            <View style={[s.formCard, isMobile && { padding: 20 }]}>
               <Text style={s.formTitle}>Send us a Message</Text>
-              <View style={s.formRow}>
+              <View style={[s.formRow, isMobile && { flexDirection: 'column' }]}>
                 <View style={s.formGroup}>
                   <Text style={s.formLabel}>Your Name *</Text>
                   <TextInput
@@ -544,16 +556,17 @@ function ContactSection() {
 
 // ─── FOOTER ───────────────────────────────────────────────────────────────────
 function Footer() {
+  const isMobile = useIsMobile();
   return (
-    <View style={s.footer}>
-      <View style={s.footerTop}>
+    <View style={[s.footer, isMobile && { paddingHorizontal: 20 }]}>
+      <View style={[s.footerTop, isMobile && { flexDirection: 'column', alignItems: 'flex-start' }]}>
         <View style={s.footerBrand}>
           <View style={s.footerDot} />
           <Text style={s.footerBrandName}>nexley.</Text>
         </View>
         <Text style={s.footerTagline}>Building digital products that grow your business.</Text>
       </View>
-      <View style={s.footerBottom}>
+      <View style={[s.footerBottom, isMobile && { flexDirection: 'column', alignItems: 'flex-start' }]}>
         <Text style={s.footerCopy}>© 2025 Nexley Digital. All rights reserved.</Text>
         <Pressable
           style={({ pressed }) => [s.footerWa, pressed && { opacity: 0.8 }]}
