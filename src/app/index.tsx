@@ -11,6 +11,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, {
   FadeInDown,
   FadeInLeft,
@@ -139,9 +140,11 @@ function HeroSection() {
             ))}
           </FadeIn>
         </View>
-        <FadeIn delay={300} from="right" style={s.heroRight}>
-          <HeroMockup />
-        </FadeIn>
+        {isWeb && (
+          <FadeIn delay={300} from="right" style={s.heroRight}>
+            <HeroMockup />
+          </FadeIn>
+        )}
       </View>
     </View>
   );
@@ -565,10 +568,11 @@ function Footer() {
 
 // ─── ROOT ─────────────────────────────────────────────────────────────────────
 export default function HomeScreen() {
+  const insets = useSafeAreaInsets();
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: C.bg }}
-      contentContainerStyle={{ paddingTop: isWeb ? 72 : 0 }}
+      contentContainerStyle={{ paddingTop: isWeb ? 72 : insets.top }}
     >
       <HeroSection />
       <ServicesSection />
@@ -629,10 +633,10 @@ const s = StyleSheet.create({
   heroHeadline: { color: C.text, fontSize: isWeb ? 62 : 40, fontWeight: '800', lineHeight: isWeb ? 74 : 50, letterSpacing: -1 },
   heroSubtext: { color: C.textSub, fontSize: 17, lineHeight: 28, maxWidth: 440 },
   heroCtas: { flexDirection: isWeb ? 'row' : 'column', gap: 12, marginTop: 8 },
-  ctaPrimary: { backgroundColor: C.whatsapp, paddingVertical: 15, paddingHorizontal: 26, borderRadius: 11, alignSelf: 'flex-start' },
-  ctaPrimaryText: { color: '#fff', fontSize: 15, fontWeight: '700' },
-  ctaSecondary: { borderWidth: 1, borderColor: C.border, paddingVertical: 15, paddingHorizontal: 26, borderRadius: 11, alignSelf: 'flex-start' },
-  ctaSecondaryText: { color: C.text, fontSize: 15, fontWeight: '600' },
+  ctaPrimary: { backgroundColor: C.whatsapp, paddingVertical: 15, paddingHorizontal: 26, borderRadius: 11, alignSelf: isWeb ? 'flex-start' : 'stretch' },
+  ctaPrimaryText: { color: '#fff', fontSize: 15, fontWeight: '700', textAlign: 'center' },
+  ctaSecondary: { borderWidth: 1, borderColor: C.border, paddingVertical: 15, paddingHorizontal: 26, borderRadius: 11, alignSelf: isWeb ? 'flex-start' : 'stretch' },
+  ctaSecondaryText: { color: C.text, fontSize: 15, fontWeight: '600', textAlign: 'center' },
   stats: { flexDirection: 'row', marginTop: 8, alignSelf: 'flex-start' },
   stat: { paddingHorizontal: isWeb ? 24 : 16, paddingVertical: 8, gap: 2, alignItems: 'center' },
   statBorder: { borderLeftWidth: 1, borderColor: C.border },

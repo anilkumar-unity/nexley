@@ -1,6 +1,7 @@
 import { AnimateOnScroll } from '@/components/animate-on-scroll';
 import React, { useState } from 'react';
 import { Linking, Platform, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const C = {
   bg:          '#060D1F',
@@ -237,9 +238,10 @@ function PricingCard({
 
 export default function PricingScreen() {
   const [cycle, setCycle] = useState<BillingCycle>('monthly');
+  const insets = useSafeAreaInsets();
 
   return (
-    <ScrollView style={s.root} contentContainerStyle={s.root2}>
+    <ScrollView style={s.root} contentContainerStyle={[s.root2, !isWeb && { paddingTop: insets.top }]}>
       {/* Header */}
       <View style={s.hero}>
         <View style={[s.blob, { left: -100, top: -60, backgroundColor: 'rgba(74,124,252,0.09)' }]} />
@@ -450,7 +452,7 @@ const s = StyleSheet.create({
     borderColor: C.accent + '33',
     maxWidth: MAX_W,
     alignSelf: 'center',
-    width: isWeb ? undefined : 'auto',
+    width: isWeb ? undefined : '100%',
   },
   ctaBannerTitle: { color: C.text, fontSize: isWeb ? 26 : 22, fontWeight: '800', textAlign: 'center' },
   ctaBannerSub: { color: C.textSub, fontSize: 14, lineHeight: 22, textAlign: 'center', maxWidth: 440 },
